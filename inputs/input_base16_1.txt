@@ -1,0 +1,4 @@
+Base = 16
+N1 = BC
+N2 = BC
+E1 = N1 N2 +
