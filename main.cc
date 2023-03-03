@@ -17,7 +17,8 @@ void Help();
 void ReadFile(std::string, std::string);
 std::pair<std::string, std::string> Split(std::string);
 bool CheckValidOperand(std::string, size_t);
-int CheckExpression(std::string);
+bool CheckExpression(std::string);
+std::pair<size_t, std::string> SplitExpression(std::string);
 template <typename T, typename K>
 std::vector<std::pair<std::string, T>> Process(std::vector<std::pair<std::string, std::string>>, std::vector<std::pair<std::string, std::string>>);
 
@@ -37,15 +38,6 @@ int main(int argc, char **argv)
 
         std::cout << "Argumentos correctos. Compruebe el fichero de salida: " << argv[2] << std::endl;
         ReadFile(namefile_input, namefile_output);
-        
-        //Modificacion
-        
-        std::cout << "-------------------------------------" << std::endl;
-        BigInt<2> myUser = "0110";
-        size_t sizeOfMyUser = sizeof(myUser);
-        std::cout << "myUser:  " << myUser << std::endl;
-        std::cout << "myuser:  " << myUser.operator BigInt<10>() << std::endl;
-        std::cout << "Tamaño del objeto sizeOfMyUser: " << sizeOfMyUser << std::endl;
     }
     else if ((argc == 2) && (argv[1] == kOptionHelp))
     {
@@ -72,58 +64,86 @@ void ReadFile(std::string file, std::string file_output)
     std::ifstream file_input(file);
     std::string line;
 
-    std::vector<std::pair<std::string, std::string>> operands;
+    std::vector<std::pair<std::string, std::pair<size_t, std::string>>> operands;
     std::vector<std::pair<std::string, std::string>> operations;
 
     if (file_input.is_open())
     {
-        getline(file_input, line);
-        std::pair<std::string, std::string> aux_base = Split(line);
-        size_t base = std::stoi(aux_base.second);
-
         while (getline(file_input, line))
         {
             std::pair<std::string, std::string> aux_pair = Split(line);
-            if (CheckExpression(aux_pair.second) == 0)
-                operands.push_back(aux_pair);
+            if (CheckExpression(aux_pair.second))
+            {
+                std::pair<size_t, std::string> pair_operand = SplitExpression(aux_pair.second);
+                std::pair<std::string, std::pair<size_t, std::string>> pair_vector(aux_pair.first, pair_operand);
+                operands.push_back(pair_vector);
+            }
             else
                 operations.push_back(aux_pair);
         }
-        switch (base)
-        {
-        case 2:
-            WriteFile<BigInt<2>>(file_output, Process<BigInt<2>, BigInt<2>>(operands, operations));
-            break;
-        case 8:
-            WriteFile<BigInt<8>>(file_output, Process<BigInt<8>, BigInt<2>>(operands, operations));
-            break;
-        case 10:
-            WriteFile<BigInt<10>>(file_output, Process<BigInt<10>, BigInt<2>>(operands, operations));
-            break;
-        case 16:
-            WriteFile<BigInt<16>>(file_output, Process<BigInt<16>, BigInt<2>>(operands, operations));
-            break;
-        default:
-            std::cout << "Base no válida" << std::endl;
-            break;
-        }
-
-        file_input.close();
     }
     else
     {
         std::cout << "Error al abrir el fichero: " << file << ", comprueba si existe el fichero." << std::endl;
         exit(EXIT_FAILURE);
     }
+
+    std::cout << "Operandos" << std::endl;
+    for (size_t i = 0; i < operands.size(); i++)
+        std::cout << operands[i].first << "-->" << operands[i].second.first << " , " << operands[i].second.second << std::endl;
+
+    std::cout << "Operaciones" << std::endl;
+    for (size_t i = 0; i < operations.size(); i++)
+        std::cout << operations[i].first << "--> "<< operations[i].second << std::endl;
+    
+    
+    // if (file_input.is_open())
+    // {
+    //     while (getline(file_input, line))
+    //     {
+    //         std::pair<std::string, std::string> aux_pair = Split(line);
+    //         if (CheckExpression(aux_pair.second) == 0)
+    //             operands.push_back(aux_pair);
+    //         else
+    //             operations.push_back(aux_pair);
+    //     }
+    //     // switch (base)
+    //     // {
+    //     // case 2:
+    //     //     WriteFile<BigInt<2>>(file_output, Process<BigInt<2>, BigInt<2>>(operands, operations));
+    //     //     break;
+    //     // case 8:
+    //     //     WriteFile<BigInt<8>>(file_output, Process<BigInt<8>, BigInt<2>>(operands, operations));
+    //     //     break;
+    //     // case 10:
+    //     //     WriteFile<BigInt<10>>(file_output, Process<BigInt<10>, BigInt<2>>(operands, operations));
+    //     //     break;
+    //     // case 16:
+    //     //     WriteFile<BigInt<16>>(file_output, Process<BigInt<16>, BigInt<2>>(operands, operations));
+    //     //     break;
+    //     // default:
+    //     //     std::cout << "Base no válida" << std::endl;
+    //     //     break;
+    //     // }
+
+    //     file_input.close();
+    // }
+    // else
+    // {
+    //     std::cout << "Error al abrir el fichero: " << file << ", comprueba si existe el fichero." << std::endl;
+    //     exit(EXIT_FAILURE);
+    // }
 }
 
-int CheckExpression(std::string line)
+bool CheckExpression(std::string line)
 {
     std::regex reg("^[+-]?[0-9A-F]+$");
-    if (std::regex_match(line, reg))
-        return 0;
+    std::size_t pos = line.find(",");
+    std::string str = line.substr(pos + 2);
+    if (std::regex_match(str, reg))
+        return true;
     else
-        return 1;
+        return false;
 }
 
 std::pair<std::string, std::string> Split(std::string line)
@@ -132,6 +152,15 @@ std::pair<std::string, std::string> Split(std::string line)
     std::size_t pos = line.find(" ");
     pair_str.first = line.substr(0, pos);
     pair_str.second = line.substr(pos + 3);
+
+    return pair_str;
+}
+
+std::pair<size_t, std::string> SplitExpression(std::string line)
+{
+    std::pair<size_t, std::string> pair_str;
+    pair_str.first = std::stoi(line.substr(0, line.find(",")));
+    pair_str.second = line.substr(line.find(",") + 2);
 
     return pair_str;
 }
