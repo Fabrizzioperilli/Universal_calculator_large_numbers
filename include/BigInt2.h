@@ -29,8 +29,6 @@ template <size_t Base>
 BigInt<Base> pow(const BigInt<Base> &, const BigInt<Base> &);
 
 
-
-
 template <>
 class BigInt<2>: public Number
 {
@@ -84,12 +82,10 @@ public:
   std::ostream& Write(std::ostream&) const override;
   std::istream& Read(std::istream&) override;
 
-
-
   BigInt<2> FillSign(int) const;
 
-  template <size_t Base>
-  operator BigInt<Base>();
+  // template <size_t Base>
+  // operator BigInt<Base>();
 
 private:
   std::vector<bool> digits_;

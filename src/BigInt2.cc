@@ -1,5 +1,6 @@
 
 #include "../include/BigInt2.h"
+#include "../include/BigIntException.h"
 
 BigInt<2>::BigInt(long n)
 {
@@ -26,7 +27,7 @@ BigInt<2>::BigInt(std::string s)
   else if (s[0] == '0')
     sign_ = 0;
   else
-    throw std::invalid_argument("Invalid binary string");
+    throw BigIntBadDigit(s[0]);
 
   for (int i = s.length() - 1; i >= 0; i--)
   {
@@ -35,7 +36,7 @@ BigInt<2>::BigInt(std::string s)
     else if (s[i] == '1')
       digits_.push_back(true);
     else
-      throw std::invalid_argument("Invalid binary string");
+       throw BigIntBadDigit(s[i]);
   }
 }
 
@@ -300,7 +301,7 @@ BigInt<2> BigInt<2>::operator/(const BigInt<2> &b) const
   BigInt<2> divisor = b;
 
   if (divisor == BigInt<2>("0"))
-    throw std::invalid_argument("Divisor cannot be zero");
+    throw BigIntDivisionByZero();
 
   if (dividend == BigInt<2>("0"))
     return BigInt<2>("0");
@@ -352,7 +353,7 @@ BigInt<2> BigInt<2>::operator%(const BigInt<2> &b) const
     divisor = divisor.FillSign(dividend.GetDigits().size() - divisor.GetDigits().size());
 
   if (divisor == BigInt<2>("0"))
-    throw std::invalid_argument("Divisor cannot be zero");
+    throw BigIntDivisionByZero();
 
   if (dividend == BigInt<2>("0"))
     return BigInt<2>("0");
@@ -443,31 +444,31 @@ bool BigInt<2>::operator[](int i) const
   return digits_[i];
 }
 
-template <size_t Base>
-BigInt<2>::operator BigInt<Base>()
-{
+// template <size_t Base>
+// BigInt<2>::operator BigInt<Base>()
+// {
 
-  BigInt<2> aux_this(*this);
-  BigInt<Base> result;
-  int aux_sign;
+//   BigInt<2> aux_this(*this);
+//   BigInt<Base> result;
+//   int aux_sign;
 
-  if (aux_this.sign() == 1)
-  {
-    aux_this = -aux_this;
-    aux_sign = 1;
-  }
+//   if (aux_this.sign() == 1)
+//   {
+//     aux_this = -aux_this;
+//     aux_sign = 1;
+//   }
 
-  for (int i = 0; i < aux_this.GetDigits().size(); i++)
-    if (aux_this.GetDigits()[i])
-      result = result + BigInt<Base>(std::pow(2, i));
+//   for (int i = 0; i < aux_this.GetDigits().size(); i++)
+//     if (aux_this.GetDigits()[i])
+//       result = result + BigInt<Base>(std::pow(2, i));
 
-  if (aux_sign == 1)
-    result.sign(-1);
-  else
-    result.sign(1);
+//   if (aux_sign == 1)
+//     result.sign(-1);
+//   else
+//     result.sign(1);
 
-  return result;
-}
+//   return result;
+// }
 
 Number* BigInt<2>::Add(const Number* n) const
 {

@@ -11,6 +11,7 @@
 #include <regex>
 #include <math.h>
 #include "Number.h"
+#include "BigIntException.h"
 
 template <size_t Base>
 class BigInt;
@@ -79,7 +80,7 @@ public:
   BigInt<Base> operator%(const BigInt<Base> &) const;
   friend BigInt<Base> pow<Base>(const BigInt<Base> &, const BigInt<Base> &);
 
-  operator BigInt<2>();
+  // operator BigInt<2>();
   
   Number *Add(const Number *) const override;
   Number *Subtract(const Number *) const override;
@@ -555,6 +556,9 @@ BigInt<Base> operator/(const BigInt<Base> &lhs, const BigInt<Base> &rhs)
   if (n2.sign() == -1)
     n2 = -n2;
 
+  if (n2 == BigInt<Base>(0L))
+    throw BigIntDivisionByZero();
+
   if (n1 < n2)
   {
     result.digits_.push_back('0');
@@ -602,10 +606,7 @@ BigInt<Base> BigInt<Base>::operator%(const BigInt<Base> &rhs) const
     n2 = -n2;
 
   if (n2 == BigInt<Base>("0"))
-  {
-    std::cerr << "Error: no se puede dividir entre cero." << std::endl;
-    return BigInt<Base>();
-  }
+    throw BigIntDivisionByZero();
 
   if (n1 < n2)
     return n1;
@@ -684,6 +685,7 @@ BigInt<Base> pow(const BigInt<Base> &a, const BigInt<Base> &b)
 //     result.push_back(number_aux % two == zero ? false : true);
 //     number_aux = number_aux / two;
 //   }
+
 
 //   result.push_back(false);
 
@@ -807,6 +809,7 @@ bool BigInt<Base>::CheckDigits(char c)
       return true;
     break;
   default:
+    throw BigIntBadDigit(c);
     break;
   }
   return false;
