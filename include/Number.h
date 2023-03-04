@@ -14,11 +14,11 @@ class Number
 public:
   ~Number();
   virtual Number* Add(const Number*) const = 0;
-  // virtual Number* Subtract(const Number*) const = 0;
-  // virtual Number* Multiply(const Number*) const = 0;
-  // virtual Number* Divide(const Number*) const = 0;
-  // virtual Number* Module(const Number*) const = 0;
-  // virtual Number* Pow(const Number*) const = 0;
+  virtual Number* Subtract(const Number*) const = 0;
+  virtual Number* Multiply(const Number*) const = 0;
+  virtual Number* Divide(const Number*) const = 0;
+  virtual Number* Module(const Number*) const = 0;
+  virtual Number* Pow(const Number*) const = 0;
 
   // // virtual operator BigInt<2>() const = 0;
   // // virtual operator BigInt<8>() const = 0;

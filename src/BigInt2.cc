@@ -475,11 +475,35 @@ Number* BigInt<2>::Add(const Number* n) const
   return new BigInt<2>(*this + aux);
 }
 
-// Number* BigInt<2>::Subtract(const Number* n) const
-// {
-//   BigInt<2> aux = *(BigInt<2>*)n;
-//   return new BigInt<2>(*this - aux);
-// }
+Number* BigInt<2>::Subtract(const Number* n) const
+{
+  BigInt<2> aux = *(BigInt<2>*)n;
+  return new BigInt<2>(*this - aux);
+}
+
+Number* BigInt<2>::Multiply(const Number* n) const
+{
+  BigInt<2> aux = *(BigInt<2>*)n;
+  return new BigInt<2>(*this * aux);
+}
+
+Number* BigInt<2>::Divide(const Number* n) const
+{
+  BigInt<2> aux = *(BigInt<2>*)n;
+  return new BigInt<2>(*this / aux);
+}
+
+Number* BigInt<2>::Module(const Number* n) const
+{
+  BigInt<2> aux = *(BigInt<2>*)n;
+  return new BigInt<2>(*this % aux);
+}
+
+Number* BigInt<2>::Pow(const Number* n) const
+{
+  BigInt<2> aux = *(BigInt<2>*)n;
+  return new BigInt<2>(pow(*this, aux));
+}
 
 Number& BigInt<2>::operator=(const Number& n)
 {

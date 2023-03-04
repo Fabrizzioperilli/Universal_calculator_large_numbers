@@ -73,11 +73,11 @@ public:
   friend BigInt<2> pow<2>(const BigInt<2> &, const BigInt<2> &);
 
   Number* Add(const Number*) const override;
-  // Number*Subtract(const Number*) const override;
-  // Number *Multiply(const Number *) const override;
-  // Number *Divide(const Number *) const override;
-  // Number *Module(const Number *) const override;
-  // Number *Pow(const Number *) const override;
+  Number*Subtract(const Number*) const override;
+  Number *Multiply(const Number *) const override;
+  Number *Divide(const Number *) const override;
+  Number *Module(const Number *) const override;
+  Number *Pow(const Number *) const override;
 
   Number& operator=(const Number&) override;
   

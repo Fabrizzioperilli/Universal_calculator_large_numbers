@@ -82,11 +82,11 @@ public:
   operator BigInt<2>();
   
   Number *Add(const Number *) const override;
-  // Number *Subtract(const Number *) const override;
-  // Number *Multiply(const Number *) const override;
-  // Number *Divide(const Number *) const override;
-  // Number *Module(const Number *) const override;
-  // Number *Pow(const Number *) const override;
+  Number *Subtract(const Number *) const override;
+  Number *Multiply(const Number *) const override;
+  Number *Divide(const Number *) const override;
+  Number *Module(const Number *) const override;
+  Number *Pow(const Number *) const override;
 
 
   Number& operator=(const Number&) override;
@@ -708,51 +708,50 @@ Number* BigInt<Base>::Add(const Number* n) const
   return new BigInt<Base>(*this + *n1);
 }
 
-// template <size_t Base>
-// Number* BigInt<Base>::Subtract(const Number* n) const
-// {
-//   const BigInt<Base>* n1 = dynamic_cast<const BigInt<Base>*>(n);
-//   if (n1 == nullptr)
-//     return nullptr;
-//   return new BigInt<Base>(*this - *n1);
-// }
+template <size_t Base>
+Number* BigInt<Base>::Subtract(const Number* n) const
+{
+  const BigInt<Base>* n1 = dynamic_cast<const BigInt<Base>*>(n);
+  if (n1 == nullptr)
+    return nullptr;
+  return new BigInt<Base>(*this - *n1);
+}
 
-// template <size_t Base>
-// Number* BigInt<Base>::Multiply(const Number* n) const
-// {
-//   const BigInt<Base>* n1 = dynamic_cast<const BigInt<Base>*>(n);
-//   if (n1 == nullptr)
-//     return nullptr;
-//   return new BigInt<Base>(*this * *n1);
-// }
+template <size_t Base>
+Number* BigInt<Base>::Multiply(const Number* n) const
+{
+  const BigInt<Base>* n1 = dynamic_cast<const BigInt<Base>*>(n);
+  if (n1 == nullptr)
+    return nullptr;
+  return new BigInt<Base>(*this * *n1);
+}
 
-// template <size_t Base>
-// Number* BigInt<Base>::Divide(const Number* n) const
-// {
-//   const BigInt<Base>* n1 = dynamic_cast<const BigInt<Base>*>(n);
-//   if (n1 == nullptr)
-//     return nullptr;
-//   return new BigInt<Base>(*this / *n1);
-// }
+template <size_t Base>
+Number* BigInt<Base>::Divide(const Number* n) const
+{
+  const BigInt<Base>* n1 = dynamic_cast<const BigInt<Base>*>(n);
+  if (n1 == nullptr)
+    return nullptr;
+  return new BigInt<Base>(*this / *n1);
+}
 
-// template <size_t Base>
-// Number* BigInt<Base>::Module(const Number* n) const
-// {
-//   const BigInt<Base>* n1 = dynamic_cast<const BigInt<Base>*>(n);
-//   if (n1 == nullptr)
-//     return nullptr;
-//   return new BigInt<Base>(*this % *n1);
-// }
+template <size_t Base>
+Number* BigInt<Base>::Module(const Number* n) const
+{
+  const BigInt<Base>* n1 = dynamic_cast<const BigInt<Base>*>(n);
+  if (n1 == nullptr)
+    return nullptr;
+  return new BigInt<Base>(*this % *n1);
+}
 
-// template <size_t Base>
-// Number* BigInt<Base>::Pow(const Number* n) const
-// {
-//   const BigInt<Base>* n1 = dynamic_cast<const BigInt<Base>*>(n);
-//   if (n1 == nullptr)
-//     return nullptr;
-//   return new BigInt<Base>(pow(*this, *n1));
-// }
-
+template <size_t Base>
+Number* BigInt<Base>::Pow(const Number* n) const
+{
+  const BigInt<Base>* n1 = dynamic_cast<const BigInt<Base>*>(n);
+  if (n1 == nullptr)
+    return nullptr;
+  return new BigInt<Base>(pow(*this, *n1));
+}
 
 template <size_t Base>
 Number& BigInt<Base>::operator=(const Number& n)
