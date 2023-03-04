@@ -4,14 +4,31 @@
 #include <exception>
 #include <string>
 
+#include <exception>
+#include <string>
+
 class BigIntException : public std::exception {
+private:
+    std::string m_file;
+    int m_line;
+
 public:
+    BigIntException(const char* file, int line) : m_file(file), m_line(line) {}
+
     virtual const char* what() const noexcept {
         return "BigIntException";
     }
 
     virtual std::string getErrorMessage() const noexcept {
         return "";
+    }
+
+    std::string getLocation() const noexcept {
+        std::string location = "Archivo: ";
+        location += m_file;
+        location += ", línea: ";
+        location += std::to_string(m_line);
+        return location;
     }
 };
 
@@ -20,7 +37,7 @@ private:
     char m_badDigit;
 
 public:
-    BigIntBadDigit(char badDigit) : m_badDigit(badDigit) {}
+    BigIntBadDigit(char badDigit, const char* file, int line) : BigIntException(file, line), m_badDigit(badDigit) {}
 
     const char* what() const noexcept {
         return "BigIntBadDigit";
@@ -35,6 +52,8 @@ public:
 
 class BigIntDivisionByZero : public BigIntException {
 public:
+    BigIntDivisionByZero(const char* file, int line) : BigIntException(file, line) {}
+
     const char* what() const noexcept {
         return "BigIntDivisionByZero";
     }
@@ -49,7 +68,7 @@ private:
     int m_base;
 
 public:
-    BigIntBaseNotImplemented(int base) : m_base(base) {}
+    BigIntBaseNotImplemented(int base, const char* file, int line) : BigIntException(file, line), m_base(base) {}
 
     const char* what() const noexcept {
         return "BigIntBaseNotImplemented";

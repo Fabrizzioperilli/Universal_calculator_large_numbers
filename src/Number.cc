@@ -21,7 +21,7 @@ Number* Number::create(size_t base, const std::string& number)
       n = new BigInt<16>(number);
       break;
     default:
-      throw BigIntBaseNotImplemented(base);
+      throw BigIntBaseNotImplemented(base, __FILE__, __LINE__);
       break;
   }
   return n;

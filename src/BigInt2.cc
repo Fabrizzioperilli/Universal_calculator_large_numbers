@@ -27,7 +27,7 @@ BigInt<2>::BigInt(std::string s)
   else if (s[0] == '0')
     sign_ = 0;
   else
-    throw BigIntBadDigit(s[0]);
+    throw BigIntBadDigit(s[0], __FILE__, __LINE__);
 
   for (int i = s.length() - 1; i >= 0; i--)
   {
@@ -36,7 +36,7 @@ BigInt<2>::BigInt(std::string s)
     else if (s[i] == '1')
       digits_.push_back(true);
     else
-       throw BigIntBadDigit(s[i]);
+       throw BigIntBadDigit(s[i], __FILE__, __LINE__);
   }
 }
 
@@ -301,7 +301,7 @@ BigInt<2> BigInt<2>::operator/(const BigInt<2> &b) const
   BigInt<2> divisor = b;
 
   if (divisor == BigInt<2>("0"))
-    throw BigIntDivisionByZero();
+    throw BigIntDivisionByZero(__FILE__, __LINE__);
 
   if (dividend == BigInt<2>("0"))
     return BigInt<2>("0");
@@ -353,7 +353,7 @@ BigInt<2> BigInt<2>::operator%(const BigInt<2> &b) const
     divisor = divisor.FillSign(dividend.GetDigits().size() - divisor.GetDigits().size());
 
   if (divisor == BigInt<2>("0"))
-    throw BigIntDivisionByZero();
+    throw BigIntDivisionByZero(__FILE__, __LINE__);
 
   if (dividend == BigInt<2>("0"))
     return BigInt<2>("0");

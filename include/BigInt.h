@@ -557,7 +557,7 @@ BigInt<Base> operator/(const BigInt<Base> &lhs, const BigInt<Base> &rhs)
     n2 = -n2;
 
   if (n2 == BigInt<Base>(0L))
-    throw BigIntDivisionByZero();
+    throw BigIntDivisionByZero(__FILE__, __LINE__);
 
   if (n1 < n2)
   {
@@ -606,7 +606,7 @@ BigInt<Base> BigInt<Base>::operator%(const BigInt<Base> &rhs) const
     n2 = -n2;
 
   if (n2 == BigInt<Base>("0"))
-    throw BigIntDivisionByZero();
+    throw BigIntDivisionByZero(__FILE__, __LINE__);
 
   if (n1 < n2)
     return n1;
@@ -809,7 +809,7 @@ bool BigInt<Base>::CheckDigits(char c)
       return true;
     break;
   default:
-    throw BigIntBadDigit(c);
+    throw BigIntBadDigit(c, __FILE__, __LINE__);
     break;
   }
   return false;

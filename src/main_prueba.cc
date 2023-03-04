@@ -6,7 +6,7 @@ int main()
 
     try
     {
-        Number *n = n->create(10, "123");
+        Number *n = n->create(19, "123");
         Number *n2 = n2->create(10, "5");
         Number *bin = bin->create(2, "0100");
         Number *bin2 = bin2->create(2, "001");
@@ -27,23 +27,24 @@ int main()
     }
     catch (BigIntBadDigit &e)
     {
-        std::cout << e.what() << std::endl;
-        std::cout << e.getErrorMessage() << std::endl;
+        std::cout <<"Exception--> " << e.what() << std::endl;
+        std::cout << e.getErrorMessage() << " -- " << e.getLocation() <<  std::endl;
+
     }
     catch (BigIntBaseNotImplemented &e)
     {
-        std::cout << e.what() << std::endl;
-        std::cout << e.getErrorMessage() << std::endl;
+        std::cout <<"Exception--> " << e.what() << std::endl;
+        std::cout << e.getErrorMessage() << " -- " << e.getLocation() <<  std::endl;
     }
     catch (BigIntDivisionByZero &e)
     {
-        std::cout << e.what() << std::endl;
-        std::cout << e.getErrorMessage() << std::endl;
+        std::cout <<"Exception--> " << e.what() << std::endl;
+        std::cout << e.getErrorMessage() << " -- " << e.getLocation() <<  std::endl;
     }
     catch (BigIntException &e)
     {
-        std::cout << e.what() << std::endl;
-        std::cout << e.getErrorMessage() << std::endl;
+        std::cout <<"Exception--> " << e.what() << std::endl;
+        std::cout << e.getErrorMessage() << " -- " << e.getLocation() <<  std::endl;
     }
 
     return 0;
