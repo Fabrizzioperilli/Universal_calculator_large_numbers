@@ -8,9 +8,9 @@ Number* Number::create(size_t base, const std::string& number)
   Number* n = nullptr;
   switch (base)
   {
-    // case 2:
-    //   n = new BigInt<2>(number);
-    //   break;
+    case 2:
+      n = new BigInt<2>(number);
+      break;
     case 8:
       n = new BigInt<8>(number);
       break;
