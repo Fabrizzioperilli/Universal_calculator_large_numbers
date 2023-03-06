@@ -40,6 +40,72 @@ BigInt<Base> operator/(const BigInt<Base> &, const BigInt<Base> &);
 template <size_t Base>
 BigInt<Base> pow(const BigInt<Base> &, const BigInt<Base> &);
 
+template <>
+class BigInt<2>: public Number
+{
+public:
+  BigInt(long = 0);
+  BigInt(std::string);
+  BigInt(const char *);
+  BigInt(const BigInt<2> &);
+  ~BigInt();
+
+  BigInt<2> operator=(const BigInt<2> &);
+  std::vector<bool> GetDigits() const;
+  void SetDigits(std::vector<bool>);
+
+  friend std::ostream &operator<< <2>(std::ostream &, const BigInt<2> &);
+  friend std::istream &operator>><2>(std::istream &, BigInt<2> &);
+
+  int sign() const;
+  void sign(int);
+  bool operator[](int) const;
+
+  friend bool operator==<2>(const BigInt<2> &, const BigInt<2> &);
+  bool operator!=(const BigInt<2> &) const;
+  friend bool operator><2>(const BigInt<2> &, const BigInt<2> &);
+  bool operator>=(const BigInt<2> &) const;
+  friend bool operator< <2>(const BigInt<2> &, const BigInt<2> &);
+  bool operator<=(const BigInt<2> &) const;
+
+  BigInt<2> &operator++();
+  BigInt<2> operator++(int);
+  BigInt<2> &operator--();
+  BigInt<2> operator--(int);
+
+  BigInt<2> operator+(const BigInt<2> &) const;
+  BigInt<2> operator-(const BigInt<2> &) const;
+  BigInt<2> operator-() const;
+  BigInt<2> operator*(const BigInt<2> &) const;
+  BigInt<2> operator/(const BigInt<2> &) const;
+  BigInt<2> operator%(const BigInt<2> &) const;
+  friend BigInt<2> pow<2>(const BigInt<2> &, const BigInt<2> &);
+
+  Number* Add(const Number*) const override;
+  Number*Subtract(const Number*) const override;
+  Number *Multiply(const Number *) const override;
+  Number *Divide(const Number *) const override;
+  Number *Module(const Number *) const override;
+  Number *Pow(const Number *) const override;
+
+  Number& operator=(const Number&) override;
+  
+  std::ostream& Write(std::ostream&) const override;
+  std::istream& Read(std::istream&) override;
+
+  BigInt<2> FillSign(int) const;
+
+  // template <size_t Base>
+  // operator BigInt<Base>();
+
+  operator BigInt<2>() const override;
+
+private:
+  std::vector<bool> digits_;
+
+  int sign_; // 1 negative, 0 positive
+};
+
 template <size_t Base = 10>
 class BigInt: public Number {
 public:
@@ -80,7 +146,7 @@ public:
   BigInt<Base> operator%(const BigInt<Base> &) const;
   friend BigInt<Base> pow<Base>(const BigInt<Base> &, const BigInt<Base> &);
 
-  // operator BigInt<2>();
+  operator BigInt<2>() const override;
   
   Number *Add(const Number *) const override;
   Number *Subtract(const Number *) const override;
@@ -659,47 +725,47 @@ BigInt<Base> pow(const BigInt<Base> &a, const BigInt<Base> &b)
   return res;
 }
 
-// template <size_t Base>
-// BigInt<Base>::operator BigInt<2>()
-// {
-//   BigInt<2> result_bin;
-//   BigInt<Base> number_aux = *this;
-//   BigInt<Base> zero("0");
-//   BigInt<Base> two("2");
-//   int aux_sign;
-//   std::vector<bool> result;
-//   if (number_aux == zero)
-//   {
-//     result.push_back(false);
-//     result_bin.SetDigits(result);
-//     return result_bin;
-//   }
-//   if (number_aux.sign() == -1)
-//   {
-//     number_aux = -number_aux;
-//     aux_sign = -1;
-//   }
+template <size_t Base>
+BigInt<Base>::operator BigInt<2>() const
+{
+  BigInt<2> result_bin;
+  BigInt<Base> number_aux = *this;
+  BigInt<Base> zero("0");
+  BigInt<Base> two("2");
+  int aux_sign;
+  std::vector<bool> result;
+  if (number_aux == zero)
+  {
+    result.push_back(false);
+    result_bin.SetDigits(result);
+    return result_bin;
+  }
+  if (number_aux.sign() == -1)
+  {
+    number_aux = -number_aux;
+    aux_sign = -1;
+  }
 
-//   while (number_aux != zero)
-//   {
-//     result.push_back(number_aux % two == zero ? false : true);
-//     number_aux = number_aux / two;
-//   }
+  while (number_aux != zero)
+  {
+    result.push_back(number_aux % two == zero ? false : true);
+    number_aux = number_aux / two;
+  }
 
 
-//   result.push_back(false);
+  result.push_back(false);
 
-//   if (aux_sign == -1)
-//   {
-//     result_bin.SetDigits(result);
-//     result_bin = -result_bin;
-//     return result_bin;
-//   }
-//   result_bin.SetDigits(result);
-//   result_bin.sign(0);
+  if (aux_sign == -1)
+  {
+    result_bin.SetDigits(result);
+    result_bin = -result_bin;
+    return result_bin;
+  }
+  result_bin.SetDigits(result);
+  result_bin.sign(0);
 
-//   return result_bin;
-// }
+  return result_bin;
+}
 
 template <size_t Base>
 Number* BigInt<Base>::Add(const Number* n) const

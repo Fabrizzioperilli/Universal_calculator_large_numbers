@@ -1,5 +1,5 @@
 
-#include "../include/BigInt2.h"
+#include "../include/BigInt.h"
 #include "../include/BigIntException.h"
 
 BigInt<2>::BigInt(long n)
@@ -469,6 +469,11 @@ bool BigInt<2>::operator[](int i) const
 
 //   return result;
 // }
+
+BigInt<2>::operator BigInt<2>()const
+{
+  return *this;
+}
 
 Number* BigInt<2>::Add(const Number* n) const
 {
