@@ -1,7 +1,8 @@
-# Binary Large Number Calculator
+# Universal Calculator large numbers
 
 ### Description
-This program is based on a calculator in reverse Polish number notation in base 2, 8, 10 and 16 using 2's complement binary notation to perform the operations efficiently.
+
+Program developed in c++ that allows performing operations simulating a calculator in reverse Polish notation between numbers in different bases (2, 8, 10 and 16)
 
 ### Usage
 
@@ -10,7 +11,7 @@ To compile the program, the *make* command is used in the main directory and the
 To run the program you must put the name of the executable, the name of the input file and the name of the output file. For example:
 
 ```
-./bin/main inputs/input_base2_1.txt output.txt
+./bin/main inputs/input_1.txt output.txt
 ```
 ### Author
 
