@@ -20,7 +20,7 @@ public:
   virtual Number* Module(const Number*) const = 0;
   virtual Number* Pow(const Number*) const = 0;
   virtual size_t GetBase() const = 0;
-
+  
   virtual operator BigInt<2>() const = 0;
   virtual operator BigInt<8>() const = 0;
   virtual operator BigInt<10>() const = 0;

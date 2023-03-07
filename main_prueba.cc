@@ -57,5 +57,11 @@ int main()
     std::cout << oct << " (Hex) = " << oct.operator BigInt<16UL>() << std::endl;
     std::cout << hex << " (Bin) = " << hex.operator BigInt<2UL>() << std::endl;
     
+
+    BigInt<10> bin2("1010");
+    //convierte un vector de char a un string
+    std::string str(bin2.GetDigits().data(), bin2.GetDigits().size());
+    std::cout << str << std::endl;
+    
     return 0;
 }

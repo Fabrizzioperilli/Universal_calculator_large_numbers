@@ -7,7 +7,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/bin/main",
             "preLaunchTask": "Build C++ project",
-            "args": [ "inputs/input_base8_1.txt", "out.txt"],
+            "args": [ "inputs/input_base2_1.txt", "out.txt"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

@@ -492,38 +492,87 @@ BigInt<2>::operator BigInt<2>()const
 
 Number* BigInt<2>::Add(const Number* n) const
 {
-  BigInt<2> aux = *(BigInt<2>*)n;
-  return new BigInt<2>(*this + aux);
+  size_t base = GetBase();
+  size_t base2 = n->GetBase();
+
+  if (base != base2) {
+      BigInt<2> b1 = this->operator BigInt<2>();
+      BigInt<2> b2 = n->operator BigInt<2>();
+      return new BigInt<2>(b1 + b2);
+  }
+      BigInt<2> aux = *(BigInt<2>*)n;
+      return new BigInt<2>(*this + aux);
 }
 
 Number* BigInt<2>::Subtract(const Number* n) const
 {
-  BigInt<2> aux = *(BigInt<2>*)n;
-  return new BigInt<2>(*this - aux);
+  size_t base = GetBase();
+  size_t base2 = n->GetBase();
+
+  if (base != base2) {
+      BigInt<2> b1 = this->operator BigInt<2>();
+      BigInt<2> b2 = n->operator BigInt<2>();
+      return new BigInt<2>(b1 - b2);
+  }
+      BigInt<2> aux = *(BigInt<2>*)n;
+      return new BigInt<2>(*this - aux);
 }
+
 
 Number* BigInt<2>::Multiply(const Number* n) const
 {
-  BigInt<2> aux = *(BigInt<2>*)n;
-  return new BigInt<2>(*this * aux);
+  size_t base = GetBase();
+  size_t base2 = n->GetBase();
+
+  if (base != base2) {
+      BigInt<2> b1 = this->operator BigInt<2>();
+      BigInt<2> b2 = n->operator BigInt<2>();
+      return new BigInt<2>(b1 * b2);
+  }
+      BigInt<2> aux = *(BigInt<2>*)n;
+      return new BigInt<2>(*this * aux);
 }
 
 Number* BigInt<2>::Divide(const Number* n) const
 {
-  BigInt<2> aux = *(BigInt<2>*)n;
-  return new BigInt<2>(*this / aux);
+  size_t base = GetBase();
+  size_t base2 = n->GetBase();
+
+  if (base != base2) {
+      BigInt<2> b1 = this->operator BigInt<2>();
+      BigInt<2> b2 = n->operator BigInt<2>();
+      return new BigInt<2>(b1 / b2);
+  }
+      BigInt<2> aux = *(BigInt<2>*)n;
+      return new BigInt<2>(*this / aux);
 }
 
 Number* BigInt<2>::Module(const Number* n) const
 {
-  BigInt<2> aux = *(BigInt<2>*)n;
-  return new BigInt<2>(*this % aux);
+  size_t base = GetBase();
+  size_t base2 = n->GetBase();
+
+  if (base != base2) {
+      BigInt<2> b1 = this->operator BigInt<2>();
+      BigInt<2> b2 = n->operator BigInt<2>();
+      return new BigInt<2>(b1 % b2);
+  }
+      BigInt<2> aux = *(BigInt<2>*)n;
+      return new BigInt<2>(*this % aux);
 }
 
 Number* BigInt<2>::Pow(const Number* n) const
 {
-  BigInt<2> aux = *(BigInt<2>*)n;
-  return new BigInt<2>(pow(*this, aux));
+  size_t base = GetBase();
+  size_t base2 = n->GetBase();
+
+  if (base != base2) {
+      BigInt<2> b1 = this->operator BigInt<2>();
+      BigInt<2> b2 = n->operator BigInt<2>();
+      return new BigInt<2>(pow(b1, b2));
+  }
+      BigInt<2> aux = *(BigInt<2>*)n;
+      return new BigInt<2>(pow(*this, aux));
 }
 
 size_t BigInt<2>::GetBase() const

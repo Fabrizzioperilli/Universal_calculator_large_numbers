@@ -138,7 +138,12 @@ std::vector<std::pair<std::string, T*>> Process( std::vector<std::pair<std::stri
         std::pair<std::string, T*> aux = std::make_pair(operands[i].first, number);
         board.push_back(aux);
     }
-
+     for (size_t i = 0; i < operations.size(); i++) {
+        Rpn<T*> rpn(board);
+        T *result = rpn.Calculate(operations[i].second);
+        std::pair<std::string, T*> aux = std::make_pair(operations[i].first, result);
+        board.push_back(aux);
+     }
 
     return board;
 }

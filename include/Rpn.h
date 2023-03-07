@@ -11,8 +11,9 @@
 #include <stack>
 #include <vector>
 #include <cmath>
+#include "BigInt.h"
 
-template <class T, class K>
+template <class T>
 class Rpn
 {
 public:
@@ -23,34 +24,34 @@ public:
   void SetOperand(std::pair<std::string, T>);
 
 private:
-  std::stack<K> stack_;
+  std::stack<T> stack_;
   bool isOperator_(const std::string &);
   bool isOperand_(const std::string &);
-  K operate_(const K &, const K &, const std::string &);
+  T operate_(const T &, const T &, const std::string &);
   std::vector<std::string> Split_(std::string);
   std::vector<std::pair<std::string, T>> operands_;
 };
 
-template <class T, class K>
-Rpn<T, K>::Rpn() {}
+template <class T>
+Rpn<T>::Rpn() {}
 
-template <class T, class K>
-Rpn<T, K>::Rpn(std::vector<std::pair<std::string, T>> &operands)
+template <class T>
+Rpn<T>::Rpn(std::vector<std::pair<std::string, T>> &operands)
 {
   operands_ = operands;
 }
 
-template <class T, class K>
-Rpn<T, K>::~Rpn() {}
+template <class T>
+Rpn<T>::~Rpn() {}
 
-template <class T, class K>
-void Rpn<T, K>::SetOperand(std::pair<std::string, T> operand)
+template <class T>
+void Rpn<T>::SetOperand(std::pair<std::string, T> operand)
 {
   operands_.push_back(operand);
 }
 
-template <class T, class K>
-T Rpn<T, K>::Calculate(const std::string &line)
+template <class T>
+T Rpn<T>::Calculate(const std::string &line)
 {
   std::vector<std::string> tokens = Split_(line);
 
@@ -64,9 +65,9 @@ T Rpn<T, K>::Calculate(const std::string &line)
         exit(EXIT_FAILURE);
       }
 
-      K op1 = stack_.top();
+      T op1 = stack_.top();
       stack_.pop();
-      K op2 = stack_.top();
+      T op2 = stack_.top();
       stack_.pop();
       stack_.push(operate_(op1, op2, token));
     }
@@ -75,13 +76,7 @@ T Rpn<T, K>::Calculate(const std::string &line)
       for (auto operand : operands_)
         if (operand.first == token)
         {
-          if (typeid(T) == typeid(K))
-            stack_.push(operand.second);
-          else
-          {
-            K aux_k = operand.second.operator K();
-            stack_.push(aux_k);
-          }
+          stack_.push(operand.second);
           break;
         }
     }
@@ -91,15 +86,11 @@ T Rpn<T, K>::Calculate(const std::string &line)
       exit(EXIT_FAILURE);
     }
   }
-
-  K result_k = stack_.top();
-  stack_.pop();
-  T result_t = result_k.operator T();
-  return result_t;
+  return stack_.top();
 }
 
-template <class T, class K>
-bool Rpn<T, K>::isOperator_(const std::string &op)
+template <class T>
+bool Rpn<T>::isOperator_(const std::string &op)
 {
   if (op == "+" || op == "-" || op == "*" || op == "/" || op == "^" || op == "%" || op == "_" || op == "++" || op == "--" || op == ">")
     return true;
@@ -107,27 +98,21 @@ bool Rpn<T, K>::isOperator_(const std::string &op)
     return false;
 }
 
-template <class T, class K>
-K Rpn<T, K>::operate_(const K &op1, const K &op2, const std::string &operat)
+template <class T>
+T Rpn<T>::operate_(const T &op1, const T &op2, const std::string &operat)
 {
   if (operat == "+")
-    return op2 + op1;
+    return op2->Add(op1);
   else if (operat == "-")
-    return op2 - op1;
+    return op2->Subtract(op1);
   else if (operat == "*")
-    return op2 * op1;
+    return op2->Multiply(op1);
   else if (operat == "/")
-    return op2 / op1;
+    return op2->Divide(op1);
   else if (operat == "%")
-    return op2 % op1;
+    return op2->Module(op1);
   else if (operat == "^")
-    return pow(op2, op1);
-  else if (operat == "_")
-    return -K(op1);
-  else if (operat == "++")
-    return ++K(op1);
-  else if (operat == "--")
-    return --K(op1);
+    return op2->Pow(op1);
   else
   {
     std::cout << "Error: Operador no válido" << std::endl;
@@ -135,8 +120,8 @@ K Rpn<T, K>::operate_(const K &op1, const K &op2, const std::string &operat)
   }
 }
 
-template <class T, class K>
-std::vector<std::string> Rpn<T, K>::Split_(std::string line)
+template <class T>
+std::vector<std::string> Rpn<T>::Split_(std::string line)
 {
   std::vector<std::string> tokens;
   std::string token;
@@ -148,8 +133,8 @@ std::vector<std::string> Rpn<T, K>::Split_(std::string line)
   return tokens;
 }
 
-template <class T, class K>
-bool Rpn<T, K>::isOperand_(const std::string &op)
+template <class T>
+bool Rpn<T>::isOperand_(const std::string &op)
 {
   for (auto operand : operands_)
     if (operand.first == op)

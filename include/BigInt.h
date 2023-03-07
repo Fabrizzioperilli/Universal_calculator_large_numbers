@@ -41,7 +41,7 @@ template <size_t Base>
 BigInt<Base> pow(const BigInt<Base> &, const BigInt<Base> &);
 
 template <>
-class BigInt<2>: public Number
+class BigInt<2> : public Number
 {
 public:
   BigInt(long = 0);
@@ -81,8 +81,8 @@ public:
   BigInt<2> operator%(const BigInt<2> &) const;
   friend BigInt<2> pow<2>(const BigInt<2> &, const BigInt<2> &);
 
-  Number* Add(const Number*) const override;
-  Number*Subtract(const Number*) const override;
+  Number *Add(const Number *) const override;
+  Number *Subtract(const Number *) const override;
   Number *Multiply(const Number *) const override;
   Number *Divide(const Number *) const override;
   Number *Module(const Number *) const override;
@@ -90,10 +90,10 @@ public:
 
   size_t GetBase() const override;
 
-  Number& operator=(const Number&) override;
-  
-  std::ostream& Write(std::ostream&) const override;
-  std::istream& Read(std::istream&) override;
+  Number &operator=(const Number &) override;
+
+  std::ostream &Write(std::ostream &) const override;
+  std::istream &Read(std::istream &) override;
 
   BigInt<2> FillSign(int) const;
 
@@ -112,7 +112,8 @@ private:
 };
 
 template <size_t Base = 10>
-class BigInt: public Number {
+class BigInt : public Number
+{
 public:
   BigInt(long = 0);
   BigInt(std::string);
@@ -155,7 +156,7 @@ public:
   operator BigInt<8>() const override;
   operator BigInt<10>() const override;
   operator BigInt<16>() const override;
-  
+
   Number *Add(const Number *) const override;
   Number *Subtract(const Number *) const override;
   Number *Multiply(const Number *) const override;
@@ -165,10 +166,9 @@ public:
 
   size_t GetBase() const override;
 
-
-  Number& operator=(const Number&) override;
-  std::ostream& Write(std::ostream&) const override;
-  std::istream& Read(std::istream&) override;
+  Number &operator=(const Number &) override;
+  std::ostream &Write(std::ostream &) const override;
+  std::istream &Read(std::istream &) override;
 
 private:
   bool CheckBase();
@@ -762,7 +762,6 @@ BigInt<Base>::operator BigInt<2>() const
     number_aux = number_aux / two;
   }
 
-
   result.push_back(false);
 
   if (aux_sign == -1)
@@ -777,7 +776,7 @@ BigInt<Base>::operator BigInt<2>() const
   return result_bin;
 }
 
-template<size_t Base>
+template <size_t Base>
 BigInt<Base>::operator BigInt<8>() const
 {
   BigInt<Base> number_aux = *this;
@@ -786,7 +785,7 @@ BigInt<Base>::operator BigInt<8>() const
   return number_oct;
 }
 
-template<size_t Base>
+template <size_t Base>
 BigInt<Base>::operator BigInt<10>() const
 {
   BigInt<Base> number_aux = *this;
@@ -804,71 +803,270 @@ BigInt<Base>::operator BigInt<16>() const
   return number_hex;
 }
 
-
 template <size_t Base>
-Number* BigInt<Base>::Add(const Number* n) const
+Number *BigInt<Base>::Add(const Number *n) const
 {
-  const BigInt<Base>* n1 = dynamic_cast<const BigInt<Base>*>(n);
-  if (n1 == nullptr)
+
+  size_t base = GetBase();
+  size_t base2 = n->GetBase();
+
+  if (n == nullptr)
     return nullptr;
+
+  if (base != base2)
+  {
+    switch (base)
+    {
+    case 8:
+    {
+      BigInt<8> b1 = this->operator BigInt<8>();
+      BigInt<8> b2 = n->operator BigInt<8>();
+      return new BigInt<Base>(b1 + b2);
+    }
+    break;
+    case 10:
+    {
+      BigInt<10> b1 = this->operator BigInt<10>();
+      BigInt<10> b2 = n->operator BigInt<10>();
+      return new BigInt<Base>(b1 + b2);
+    }
+    break;
+    case 16:
+    {
+      BigInt<16> b1 = this->operator BigInt<16>();
+      BigInt<16> b2 = n->operator BigInt<16>();
+      return new BigInt<Base>(b1 + b2);
+    }
+    break;
+    default:
+      return nullptr;
+    }
+  }
+  BigInt<Base> *n1 = dynamic_cast<BigInt<Base> *>(const_cast<Number *>(n));
   return new BigInt<Base>(*this + *n1);
 }
 
 template <size_t Base>
-Number* BigInt<Base>::Subtract(const Number* n) const
+Number *BigInt<Base>::Subtract(const Number *n) const
 {
-  const BigInt<Base>* n1 = dynamic_cast<const BigInt<Base>*>(n);
-  if (n1 == nullptr)
+  size_t base = GetBase();
+  size_t base2 = n->GetBase();
+
+  if (n == nullptr)
     return nullptr;
+
+  if (base != base2)
+  {
+    switch (base)
+    {
+    case 8:
+    {
+      BigInt<8> b1 = this->operator BigInt<8>();
+      BigInt<8> b2 = n->operator BigInt<8>();
+      return new BigInt<Base>(b1 - b2);
+    }
+    break;
+    case 10:
+    {
+      BigInt<10> b1 = this->operator BigInt<10>();
+      BigInt<10> b2 = n->operator BigInt<10>();
+      return new BigInt<Base>(b1 - b2);
+    }
+    break;
+    case 16:
+    {
+      BigInt<16> b1 = this->operator BigInt<16>();
+      BigInt<16> b2 = n->operator BigInt<16>();
+      return new BigInt<Base>(b1 - b2);
+    }
+    break;
+    default:
+      return nullptr;
+    }
+  }
+  BigInt<Base> *n1 = dynamic_cast<BigInt<Base> *>(const_cast<Number *>(n));
   return new BigInt<Base>(*this - *n1);
 }
 
 template <size_t Base>
-Number* BigInt<Base>::Multiply(const Number* n) const
+Number *BigInt<Base>::Multiply(const Number *n) const
 {
-  const BigInt<Base>* n1 = dynamic_cast<const BigInt<Base>*>(n);
-  if (n1 == nullptr)
+  size_t base = GetBase();
+  size_t base2 = n->GetBase();
+
+  if (n == nullptr)
     return nullptr;
+
+  if (base != base2)
+  {
+    switch (base)
+    {
+    case 8:
+    {
+      BigInt<8> b1 = this->operator BigInt<8>();
+      BigInt<8> b2 = n->operator BigInt<8>();
+      return new BigInt<Base>(b1 * b2);
+    }
+    break;
+    case 10:
+    {
+      BigInt<10> b1 = this->operator BigInt<10>();
+      BigInt<10> b2 = n->operator BigInt<10>();
+      return new BigInt<Base>(b1 * b2);
+    }
+    break;
+    case 16:
+    {
+      BigInt<16> b1 = this->operator BigInt<16>();
+      BigInt<16> b2 = n->operator BigInt<16>();
+      return new BigInt<Base>(b1 * b2);
+    }
+    break;
+    default:
+      return nullptr;
+    }
+  }
+
+  BigInt<Base> *n1 = dynamic_cast<BigInt<Base> *>(const_cast<Number *>(n));
   return new BigInt<Base>(*this * *n1);
 }
 
 template <size_t Base>
-Number* BigInt<Base>::Divide(const Number* n) const
+Number *BigInt<Base>::Divide(const Number *n) const
 {
-  const BigInt<Base>* n1 = dynamic_cast<const BigInt<Base>*>(n);
-  if (n1 == nullptr)
+  size_t base = GetBase();
+  size_t base2 = n->GetBase();
+
+  if (n == nullptr)
     return nullptr;
+
+  if (base != base2)
+  {
+    switch (base)
+    {
+    case 8:
+    {
+      BigInt<8> b1 = this->operator BigInt<8>();
+      BigInt<8> b2 = n->operator BigInt<8>();
+      return new BigInt<Base>(b1 / b2);
+    }
+    break;
+    case 10:
+    {
+      BigInt<10> b1 = this->operator BigInt<10>();
+      BigInt<10> b2 = n->operator BigInt<10>();
+      return new BigInt<Base>(b1 / b2);
+    }
+    break;
+    case 16:
+    {
+      BigInt<16> b1 = this->operator BigInt<16>();
+      BigInt<16> b2 = n->operator BigInt<16>();
+      return new BigInt<Base>(b1 / b2);
+    }
+    break;
+    default:
+      return nullptr;
+    }
+  }
+  BigInt<Base> *n1 = dynamic_cast<BigInt<Base> *>(const_cast<Number *>(n));
   return new BigInt<Base>(*this / *n1);
 }
 
 template <size_t Base>
-Number* BigInt<Base>::Module(const Number* n) const
+Number *BigInt<Base>::Module(const Number *n) const
 {
-  const BigInt<Base>* n1 = dynamic_cast<const BigInt<Base>*>(n);
-  if (n1 == nullptr)
+  size_t base = GetBase();
+  size_t base2 = n->GetBase();
+
+  if (n == nullptr)
     return nullptr;
+  
+  if (base != base2)
+  {
+    switch (base)
+    {
+    case 8:
+    {
+      BigInt<8> b1 = this->operator BigInt<8>();
+      BigInt<8> b2 = n->operator BigInt<8>();
+      return new BigInt<Base>(b1 % b2);
+    }
+    break;
+    case 10:
+    {
+      BigInt<10> b1 = this->operator BigInt<10>();
+      BigInt<10> b2 = n->operator BigInt<10>();
+      return new BigInt<Base>(b1 % b2);
+    }
+    break;
+    case 16:
+    {
+      BigInt<16> b1 = this->operator BigInt<16>();
+      BigInt<16> b2 = n->operator BigInt<16>();
+      return new BigInt<Base>(b1 % b2);
+    }
+    break;
+    default:
+      return nullptr;
+    }
+  }
+  BigInt<Base> *n1 = dynamic_cast<BigInt<Base> *>(const_cast<Number *>(n));
   return new BigInt<Base>(*this % *n1);
 }
 
 template <size_t Base>
-Number* BigInt<Base>::Pow(const Number* n) const
+Number *BigInt<Base>::Pow(const Number *n) const
 {
-  const BigInt<Base>* n1 = dynamic_cast<const BigInt<Base>*>(n);
-  if (n1 == nullptr)
+  size_t base = GetBase();
+  size_t base2 = n->GetBase();
+
+  if (n == nullptr)
     return nullptr;
+
+  if (base != base2)
+  {
+    switch (base)
+    {
+    case 8:
+    {
+      BigInt<8> b1 = this->operator BigInt<8>();
+      BigInt<8> b2 = n->operator BigInt<8>();
+      return new BigInt<Base>(pow(b1, b2));
+    }
+    break;
+    case 10:
+    {
+      BigInt<10> b1 = this->operator BigInt<10>();
+      BigInt<10> b2 = n->operator BigInt<10>();
+      return new BigInt<Base>(pow(b1, b2));
+    }
+    break;
+    case 16:
+    {
+      BigInt<16> b1 = this->operator BigInt<16>();
+      BigInt<16> b2 = n->operator BigInt<16>();
+      return new BigInt<Base>(pow(b1, b2));
+    }
+    break;
+    default:
+      return nullptr;
+    }
+  }
+  BigInt<Base> *n1 = dynamic_cast<BigInt<Base> *>(const_cast<Number *>(n));
   return new BigInt<Base>(pow(*this, *n1));
 }
 
 template <size_t Base>
-size_t::BigInt<Base>::GetBase() const
+size_t BigInt<Base>::GetBase() const
 {
   return Base;
 }
 
 template <size_t Base>
-Number& BigInt<Base>::operator=(const Number& n)
+Number &BigInt<Base>::operator=(const Number &n)
 {
-  const BigInt<Base>* n1 = dynamic_cast<const BigInt<Base>*>(&n);
+  const BigInt<Base> *n1 = dynamic_cast<const BigInt<Base> *>(&n);
   if (n1 == nullptr)
     return *this;
   *this = *n1;
@@ -876,16 +1074,16 @@ Number& BigInt<Base>::operator=(const Number& n)
 }
 
 template <size_t Base>
-std::ostream& BigInt<Base>::Write(std::ostream &os) const {
+std::ostream &BigInt<Base>::Write(std::ostream &os) const
+{
   return os << *this;
 }
 
 template <size_t Base>
-std::istream& BigInt<Base>::Read(std::istream &is) {
+std::istream &BigInt<Base>::Read(std::istream &is)
+{
   return is >> *this;
 }
-
-
 
 template <size_t Base>
 bool BigInt<Base>::CheckBase()
