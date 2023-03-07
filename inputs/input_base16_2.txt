@@ -1,4 +1,3 @@
-Base = 16
-N1 = 1ABC
-N2 = 2ABC
+N1 = 16, 1ABC
+N2 = 16, 2ABC
 E1 = N1 N2 +

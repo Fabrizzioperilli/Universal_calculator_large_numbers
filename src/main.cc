@@ -19,10 +19,10 @@ std::pair<std::string, std::string> Split(std::string);
 bool CheckValidOperand(std::string, size_t);
 bool CheckExpression(std::string);
 std::pair<size_t, std::string> SplitExpression(std::string);
-
-std::vector<std::pair<std::string, Number*>> Process(std::vector<std::pair<std::string, std::pair<size_t, std::string>>>, std::vector<std::pair<std::string, std::string>>);
-
-void WriteFile(std::string, std::vector<std::pair<std::string, Number*>>);
+template <typename T>
+std::vector<std::pair<std::string, T*>> Process(std::vector<std::pair<std::string, std::pair<size_t, std::string>>>, std::vector<std::pair<std::string, std::string>>);
+template <typename T>
+void WriteFile(std::string, std::vector<std::pair<std::string, T*>>);
 
 int main(int argc, char **argv)
 {
@@ -95,7 +95,7 @@ void ReadFile(std::string file, std::string file_output)
     for (size_t i = 0; i < operations.size(); i++)
         std::cout << operations[i].first << "--> "<< operations[i].second << std::endl;
     
-    WriteFile(file_output, Process(operands, operations));
+    WriteFile<Number>(file_output, Process<Number>(operands, operations));
 }
     
 
@@ -129,28 +129,22 @@ std::pair<size_t, std::string> SplitExpression(std::string line)
     return pair_str;
 }
 
-
-std::vector<std::pair<std::string, Number*>> Process( std::vector<std::pair<std::string, std::pair<size_t, std::string>>> operands, std::vector<std::pair<std::string, std::string>> operations)
+template <typename T>
+std::vector<std::pair<std::string, T*>> Process( std::vector<std::pair<std::string, std::pair<size_t, std::string>>> operands, std::vector<std::pair<std::string, std::string>> operations)
 {
-    std::vector<std::pair<std::string, Number*>> board;
+    std::vector<std::pair<std::string, T*>> board;
     for (size_t i = 0; i < operands.size(); i++) {
-        Number* number = number->create(operands[i].second.first, operands[i].second.second);
-        std::pair<std::string, Number*> aux = std::make_pair(operands[i].first, number);
+        T* number = number->create(operands[i].second.first, operands[i].second.second);
+        std::pair<std::string, T*> aux = std::make_pair(operands[i].first, number);
         board.push_back(aux);
     }
 
-    // for (size_t i = 0; i < operations.size(); i++)
-    // {
-    //     Rpn<T, K> rpn(board);
-    //     T t(rpn.Calculate(operations[i].second));
-    //     std::pair<std::string, T> aux = std::make_pair(operations[i].first, t);
-    //     board.push_back(aux);
-    // }
+
     return board;
 }
 
-
-void WriteFile(std::string file, std::vector<std::pair<std::string, Number*>> board)
+template<typename T>
+void WriteFile(std::string file, std::vector<std::pair<std::string, T*>> board)
 {
     std::ofstream file_output(file);
     if (file_output.is_open())

@@ -1,6 +1,5 @@
-Base = 16
-N1 = ABC
-N2 = BC
-N3 = F
+N1 = 16, ABC
+N2 = 16, BC
+N3 = 16, F
 E1 = N1 N2 +
 E2 = E1 N3 - 
