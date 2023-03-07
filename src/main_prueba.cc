@@ -48,7 +48,14 @@ int main()
     }
 
     BigInt<2> bin("1010");
-    std::cout << bin.operator BigInt<2UL>() << std::endl;
-
+    BigInt<8> oct("123");
+    BigInt<10> dec("123");
+    BigInt<16> hex("D");
+    std::cout << bin << " (Bin) = " << bin.operator BigInt<2UL>().operator BigInt<8UL>() << std::endl;
+    std::cout << dec << " (Oct) = " << dec.operator BigInt<8UL>() << std::endl;
+    std::cout << hex << " (Dec) = " << hex.operator BigInt<10UL>() << std::endl;
+    std::cout << oct << " (Hex) = " << oct.operator BigInt<16UL>() << std::endl;
+    std::cout << hex << " (Bin) = " << hex.operator BigInt<2UL>() << std::endl;
+    
     return 0;
 }

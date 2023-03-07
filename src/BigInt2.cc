@@ -444,31 +444,46 @@ bool BigInt<2>::operator[](int i) const
   return digits_[i];
 }
 
-// template <size_t Base>
-// BigInt<2>::operator BigInt<Base>()
-// {
+template <size_t Base>
+BigInt<Base> BigInt<2>::ToBase() const
+{
 
-//   BigInt<2> aux_this(*this);
-//   BigInt<Base> result;
-//   int aux_sign;
+  BigInt<2> aux_this(*this);
+  BigInt<Base> result;
+  int aux_sign;
 
-//   if (aux_this.sign() == 1)
-//   {
-//     aux_this = -aux_this;
-//     aux_sign = 1;
-//   }
+  if (aux_this.sign() == 1)
+  {
+    aux_this = -aux_this;
+    aux_sign = 1;
+  }
 
-//   for (int i = 0; i < aux_this.GetDigits().size(); i++)
-//     if (aux_this.GetDigits()[i])
-//       result = result + BigInt<Base>(std::pow(2, i));
+  for (int i = 0; i < aux_this.GetDigits().size(); i++)
+    if (aux_this.GetDigits()[i])
+      result = result + BigInt<Base>(std::pow(2, i));
 
-//   if (aux_sign == 1)
-//     result.sign(-1);
-//   else
-//     result.sign(1);
+  if (aux_sign == 1)
+    result.sign(-1);
+  else
+    result.sign(1);
 
-//   return result;
-// }
+  return result;
+}
+
+BigInt<2>::operator BigInt<8>() const {
+  BigInt<2> aux_this(*this);
+  return aux_this.ToBase<8>();
+}
+
+BigInt<2>::operator BigInt<10>() const {
+  BigInt<2> aux_this(*this);
+  return aux_this.ToBase<10>();
+}
+
+BigInt<2>::operator BigInt<16>() const {
+  BigInt<2> aux_this(*this);
+  return aux_this.ToBase<16>();
+}
 
 BigInt<2>::operator BigInt<2>()const
 {

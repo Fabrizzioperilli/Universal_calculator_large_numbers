@@ -95,10 +95,13 @@ public:
 
   BigInt<2> FillSign(int) const;
 
-  // template <size_t Base>
-  // operator BigInt<Base>();
+  template <size_t Base>
+  BigInt<Base> ToBase() const;
 
   operator BigInt<2>() const override;
+  operator BigInt<8>() const override;
+  operator BigInt<10>() const override;
+  operator BigInt<16>() const override;
 
 private:
   std::vector<bool> digits_;
@@ -147,6 +150,9 @@ public:
   friend BigInt<Base> pow<Base>(const BigInt<Base> &, const BigInt<Base> &);
 
   operator BigInt<2>() const override;
+  operator BigInt<8>() const override;
+  operator BigInt<10>() const override;
+  operator BigInt<16>() const override;
   
   Number *Add(const Number *) const override;
   Number *Subtract(const Number *) const override;
@@ -766,6 +772,34 @@ BigInt<Base>::operator BigInt<2>() const
 
   return result_bin;
 }
+
+template<size_t Base>
+BigInt<Base>::operator BigInt<8>() const
+{
+  BigInt<Base> number_aux = *this;
+  BigInt<2> number_bin = number_aux.operator BigInt<2>();
+  BigInt<8> number_oct = number_bin.operator BigInt<8>();
+  return number_oct;
+}
+
+template<size_t Base>
+BigInt<Base>::operator BigInt<10>() const
+{
+  BigInt<Base> number_aux = *this;
+  BigInt<2> number_bin = number_aux.operator BigInt<2>();
+  BigInt<10> number_dec = number_bin.operator BigInt<10>();
+  return number_dec;
+}
+
+template <size_t Base>
+BigInt<Base>::operator BigInt<16>() const
+{
+  BigInt<Base> number_aux = *this;
+  BigInt<2> number_bin = number_aux.operator BigInt<2>();
+  BigInt<16> number_hex = number_bin.operator BigInt<16>();
+  return number_hex;
+}
+
 
 template <size_t Base>
 Number* BigInt<Base>::Add(const Number* n) const
