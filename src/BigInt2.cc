@@ -526,6 +526,11 @@ Number* BigInt<2>::Pow(const Number* n) const
   return new BigInt<2>(pow(*this, aux));
 }
 
+size_t BigInt<2>::GetBase() const
+{
+  return 2;
+}
+
 Number& BigInt<2>::operator=(const Number& n)
 {
   BigInt<2> aux = *(BigInt<2>*)&n;

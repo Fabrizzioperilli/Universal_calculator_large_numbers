@@ -88,6 +88,8 @@ public:
   Number *Module(const Number *) const override;
   Number *Pow(const Number *) const override;
 
+  size_t GetBase() const override;
+
   Number& operator=(const Number&) override;
   
   std::ostream& Write(std::ostream&) const override;
@@ -160,6 +162,8 @@ public:
   Number *Divide(const Number *) const override;
   Number *Module(const Number *) const override;
   Number *Pow(const Number *) const override;
+
+  size_t GetBase() const override;
 
 
   Number& operator=(const Number&) override;
@@ -853,6 +857,12 @@ Number* BigInt<Base>::Pow(const Number* n) const
   if (n1 == nullptr)
     return nullptr;
   return new BigInt<Base>(pow(*this, *n1));
+}
+
+template <size_t Base>
+size_t::BigInt<Base>::GetBase() const
+{
+  return Base;
 }
 
 template <size_t Base>
