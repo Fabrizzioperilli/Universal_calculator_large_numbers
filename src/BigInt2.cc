@@ -1,3 +1,11 @@
+/**
+ * @file BigInt2.cc
+ * @title Calculadora de expresiones en notación polaca inversa
+ * @brief Implementación de la clase BigInt<2>
+ * @version 1.0
+ * @date 6/03/2023
+ * @author: Fabrizzio Perilli Martín
+ */
 
 #include "../include/BigInt.h"
 #include "../include/BigIntException.h"
@@ -19,7 +27,6 @@ BigInt<2>::BigInt(long n)
   }
 }
 
-// Constructor que crea un BigInt<2> a partir de un string en binario.
 BigInt<2>::BigInt(std::string s)
 {
   if (s[0] == '1')
@@ -36,21 +43,18 @@ BigInt<2>::BigInt(std::string s)
     else if (s[i] == '1')
       digits_.push_back(true);
     else
-       throw BigIntBadDigit(s[i], __FILE__, __LINE__);
+      throw BigIntBadDigit(s[i], __FILE__, __LINE__);
   }
 }
 
-// Constructor que crea un BigInt<2> a partir de un char* en binario.
 BigInt<2>::BigInt(const char *s) : BigInt<2>(std::string(s)) {}
 
-// Constructor de copia.
 BigInt<2>::BigInt(const BigInt<2> &other)
 {
   digits_ = other.digits_;
   sign_ = other.sign_;
 }
 
-// Destructor.
 BigInt<2>::~BigInt() {}
 
 std::vector<bool> BigInt<2>::GetDigits() const
@@ -63,7 +67,6 @@ void BigInt<2>::SetDigits(std::vector<bool> digits)
   digits_ = digits;
 }
 
-// Operador de asignación.
 BigInt<2> BigInt<2>::operator=(const BigInt<2> &other)
 {
   digits_ = other.digits_;
@@ -95,7 +98,6 @@ BigInt<2> BigInt<2>::operator-() const
   return result;
 }
 
-// Operador de igualdad.
 bool operator==(const BigInt<2> &a, const BigInt<2> &b)
 {
   BigInt<2> aux1;
@@ -126,13 +128,11 @@ bool operator==(const BigInt<2> &a, const BigInt<2> &b)
   return true;
 }
 
-// Operador de desigualdad.
 bool BigInt<2>::operator!=(const BigInt<2> &other) const
 {
   return !(*this == other);
 }
 
-// Operador de mayor que.
 bool operator>(const BigInt<2> &a, const BigInt<2> &b)
 {
   BigInt<2> aux1;
@@ -165,25 +165,20 @@ bool operator>(const BigInt<2> &a, const BigInt<2> &b)
   return false;
 }
 
-// Operador de mayor o igual que.
 bool BigInt<2>::operator>=(const BigInt<2> &other) const
 {
   return *this > other || *this == other;
 }
 
-// Operador de menor que.
 bool operator<(const BigInt<2> &a, const BigInt<2> &b)
 {
   return !(a >= b);
 }
 
-// Operador de menor o igual que.
 bool BigInt<2>::operator<=(const BigInt<2> &other) const
 {
   return *this < other || *this == other;
 }
-
-// Operador de incremento.
 
 BigInt<2> &BigInt<2>::operator++()
 {
@@ -192,7 +187,6 @@ BigInt<2> &BigInt<2>::operator++()
   return *this;
 }
 
-// Operador de incremento postfijo.
 BigInt<2> BigInt<2>::operator++(int)
 {
   BigInt<2> result(*this);
@@ -200,7 +194,6 @@ BigInt<2> BigInt<2>::operator++(int)
   return result;
 }
 
-// Operador de decremento.
 BigInt<2> &BigInt<2>::operator--()
 {
   BigInt<2> one("01");
@@ -208,7 +201,6 @@ BigInt<2> &BigInt<2>::operator--()
   return *this;
 }
 
-// Operador de decremento postfijo.
 BigInt<2> BigInt<2>::operator--(int)
 {
   BigInt<2> result(*this);
@@ -225,8 +217,7 @@ BigInt<2> BigInt<2>::operator+(const BigInt<2> &a) const
   std::vector<bool> number_y = other.digits_;
   bool carry = false;
   bool sum;
-  // for posible overflow
-  //  we need to add zeros to the smaller number
+
   if (number_x.size() > number_y.size())
     number_y = other.FillSign(number_x.size() - number_y.size()).digits_;
   else if (number_x.size() < number_y.size())
@@ -240,7 +231,6 @@ BigInt<2> BigInt<2>::operator+(const BigInt<2> &a) const
     aux.push_back(sum);
   }
 
-  // check if overflow
   if (carry)
     aux.push_back(carry);
 
@@ -255,7 +245,6 @@ BigInt<2> BigInt<2>::operator+(const BigInt<2> &a) const
   return result;
 }
 
-// Operador de resta.
 BigInt<2> BigInt<2>::operator-(const BigInt<2> &a) const
 {
   return *this + (-a);
@@ -295,7 +284,6 @@ BigInt<2> BigInt<2>::operator*(const BigInt<2> &b) const
 
 BigInt<2> BigInt<2>::operator/(const BigInt<2> &b) const
 {
-  // implementar la division entre dos numeros binarios
   BigInt<2> result;
   BigInt<2> dividend = *this;
   BigInt<2> divisor = b;
@@ -411,7 +399,6 @@ BigInt<2> pow(const BigInt<2> &a, const BigInt<2> &b)
   return result;
 }
 
-// Operador de salida.
 std::ostream &operator<<(std::ostream &os, const BigInt<2> &n)
 {
   for (int i = n.GetDigits().size() - 1; i >= 0; i--)
@@ -419,7 +406,6 @@ std::ostream &operator<<(std::ostream &os, const BigInt<2> &n)
   return os;
 }
 
-// Operador de entrada.
 std::istream &operator>>(std::istream &is, BigInt<2> &n)
 {
   std::string s;
@@ -438,7 +424,6 @@ void BigInt<2>::sign(int s)
   sign_ = s;
 }
 
-// Devuelve el dígito en la posición i.
 bool BigInt<2>::operator[](int i) const
 {
   return digits_[i];
@@ -470,109 +455,117 @@ BigInt<Base> BigInt<2>::ToBase() const
   return result;
 }
 
-BigInt<2>::operator BigInt<8>() const {
+BigInt<2>::operator BigInt<8>() const
+{
   BigInt<2> aux_this(*this);
   return aux_this.ToBase<8>();
 }
 
-BigInt<2>::operator BigInt<10>() const {
+BigInt<2>::operator BigInt<10>() const
+{
   BigInt<2> aux_this(*this);
   return aux_this.ToBase<10>();
 }
 
-BigInt<2>::operator BigInt<16>() const {
+BigInt<2>::operator BigInt<16>() const
+{
   BigInt<2> aux_this(*this);
   return aux_this.ToBase<16>();
 }
 
-BigInt<2>::operator BigInt<2>()const
+BigInt<2>::operator BigInt<2>() const
 {
   return *this;
 }
 
-Number* BigInt<2>::Add(const Number* n) const
+Number *BigInt<2>::Add(const Number *n) const
 {
   size_t base = GetBase();
   size_t base2 = n->GetBase();
 
-  if (base != base2) {
-      BigInt<2> b1 = this->operator BigInt<2>();
-      BigInt<2> b2 = n->operator BigInt<2>();
-      return new BigInt<2>(b1 + b2);
+  if (base != base2)
+  {
+    BigInt<2> b1 = this->operator BigInt<2>();
+    BigInt<2> b2 = n->operator BigInt<2>();
+    return new BigInt<2>(b1 + b2);
   }
-      BigInt<2> aux = *(BigInt<2>*)n;
-      return new BigInt<2>(*this + aux);
+  BigInt<2> aux = *(BigInt<2> *)n;
+  return new BigInt<2>(*this + aux);
 }
 
-Number* BigInt<2>::Subtract(const Number* n) const
+Number *BigInt<2>::Subtract(const Number *n) const
 {
   size_t base = GetBase();
   size_t base2 = n->GetBase();
 
-  if (base != base2) {
-      BigInt<2> b1 = this->operator BigInt<2>();
-      BigInt<2> b2 = n->operator BigInt<2>();
-      return new BigInt<2>(b1 - b2);
+  if (base != base2)
+  {
+    BigInt<2> b1 = this->operator BigInt<2>();
+    BigInt<2> b2 = n->operator BigInt<2>();
+    return new BigInt<2>(b1 - b2);
   }
-      BigInt<2> aux = *(BigInt<2>*)n;
-      return new BigInt<2>(*this - aux);
+  BigInt<2> aux = *(BigInt<2> *)n;
+  return new BigInt<2>(*this - aux);
 }
 
-
-Number* BigInt<2>::Multiply(const Number* n) const
+Number *BigInt<2>::Multiply(const Number *n) const
 {
   size_t base = GetBase();
   size_t base2 = n->GetBase();
 
-  if (base != base2) {
-      BigInt<2> b1 = this->operator BigInt<2>();
-      BigInt<2> b2 = n->operator BigInt<2>();
-      return new BigInt<2>(b1 * b2);
+  if (base != base2)
+  {
+    BigInt<2> b1 = this->operator BigInt<2>();
+    BigInt<2> b2 = n->operator BigInt<2>();
+    return new BigInt<2>(b1 * b2);
   }
-      BigInt<2> aux = *(BigInt<2>*)n;
-      return new BigInt<2>(*this * aux);
+  BigInt<2> aux = *(BigInt<2> *)n;
+  return new BigInt<2>(*this * aux);
 }
 
-Number* BigInt<2>::Divide(const Number* n) const
+Number *BigInt<2>::Divide(const Number *n) const
 {
   size_t base = GetBase();
   size_t base2 = n->GetBase();
 
-  if (base != base2) {
-      BigInt<2> b1 = this->operator BigInt<2>();
-      BigInt<2> b2 = n->operator BigInt<2>();
-      return new BigInt<2>(b1 / b2);
+  if (base != base2)
+  {
+    BigInt<2> b1 = this->operator BigInt<2>();
+    BigInt<2> b2 = n->operator BigInt<2>();
+    return new BigInt<2>(b1 / b2);
   }
-      BigInt<2> aux = *(BigInt<2>*)n;
-      return new BigInt<2>(*this / aux);
+  BigInt<2> aux = *(BigInt<2> *)n;
+  return new BigInt<2>(*this / aux);
 }
 
-Number* BigInt<2>::Module(const Number* n) const
+Number *BigInt<2>::Module(const Number *n) const
 {
   size_t base = GetBase();
   size_t base2 = n->GetBase();
 
-  if (base != base2) {
-      BigInt<2> b1 = this->operator BigInt<2>();
-      BigInt<2> b2 = n->operator BigInt<2>();
-      return new BigInt<2>(b1 % b2);
+  if (base != base2)
+  {
+    BigInt<2> b1 = this->operator BigInt<2>();
+    BigInt<2> b2 = n->operator BigInt<2>();
+    return new BigInt<2>(b1 % b2);
   }
-      BigInt<2> aux = *(BigInt<2>*)n;
-      return new BigInt<2>(*this % aux);
+  BigInt<2> aux = *(BigInt<2> *)n;
+  return new BigInt<2>(*this % aux);
 }
 
-Number* BigInt<2>::Pow(const Number* n) const
+Number *BigInt<2>::Pow(const Number *n) const
 {
   size_t base = GetBase();
   size_t base2 = n->GetBase();
 
-  if (base != base2) {
-      BigInt<2> b1 = this->operator BigInt<2>();
-      BigInt<2> b2 = n->operator BigInt<2>();
-      return new BigInt<2>(pow(b1, b2));
+  if (base != base2)
+  {
+    BigInt<2> b1 = this->operator BigInt<2>();
+    BigInt<2> b2 = n->operator BigInt<2>();
+    return new BigInt<2>(pow(b1, b2));
   }
-      BigInt<2> aux = *(BigInt<2>*)n;
-      return new BigInt<2>(pow(*this, aux));
+  BigInt<2> aux = *(BigInt<2> *)n;
+  return new BigInt<2>(pow(*this, aux));
 }
 
 size_t BigInt<2>::GetBase() const
@@ -580,19 +573,19 @@ size_t BigInt<2>::GetBase() const
   return 2;
 }
 
-Number& BigInt<2>::operator=(const Number& n)
+Number &BigInt<2>::operator=(const Number &n)
 {
-  BigInt<2> aux = *(BigInt<2>*)&n;
+  BigInt<2> aux = *(BigInt<2> *)&n;
   *this = aux;
   return *this;
 }
 
-std::ostream& BigInt<2>::Write(std::ostream& os) const
+std::ostream &BigInt<2>::Write(std::ostream &os) const
 {
   return os << *this;
 }
 
-std::istream& BigInt<2>::Read(std::istream& is)
+std::istream &BigInt<2>::Read(std::istream &is)
 {
   return is >> *this;
 }

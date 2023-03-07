@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../include/Number.h"
+// #include "../include/Number.h"
 
 int main()
 {

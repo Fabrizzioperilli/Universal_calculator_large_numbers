@@ -1,8 +1,9 @@
 /**
  * @file main.cc
+ * @title Calculadora de expresiones en notación polaca inversa 
  * @brief Fichero principal de la calculadora de expresiones en notación polaca inversa de numeros grandes
  * @version 1.0
- * @date 14/02/2023
+ * @date 6/03/2023
  * @author: Fabrizzio Perilli Martín
  */
 
@@ -20,9 +21,9 @@ bool CheckValidOperand(std::string, size_t);
 bool CheckExpression(std::string);
 std::pair<size_t, std::string> SplitExpression(std::string);
 template <typename T>
-std::vector<std::pair<std::string, T*>> Process(std::vector<std::pair<std::string, std::pair<size_t, std::string>>>, std::vector<std::pair<std::string, std::string>>);
+std::vector<std::pair<std::string, T *>> Process(std::vector<std::pair<std::string, std::pair<size_t, std::string>>>, std::vector<std::pair<std::string, std::string>>);
 template <typename T>
-void WriteFile(std::string, std::vector<std::pair<std::string, T*>>);
+void WriteFile(std::string, std::vector<std::pair<std::string, T *>>);
 
 int main(int argc, char **argv)
 {
@@ -87,17 +88,8 @@ void ReadFile(std::string file, std::string file_output)
         exit(EXIT_FAILURE);
     }
 
-    std::cout << "Operandos" << std::endl;
-    for (size_t i = 0; i < operands.size(); i++)
-        std::cout << operands[i].first << "-->" << operands[i].second.first << " , " << operands[i].second.second << std::endl;
-
-    std::cout << "Operaciones" << std::endl;
-    for (size_t i = 0; i < operations.size(); i++)
-        std::cout << operations[i].first << "--> "<< operations[i].second << std::endl;
-    
     WriteFile<Number>(file_output, Process<Number>(operands, operations));
 }
-    
 
 bool CheckExpression(std::string line)
 {
@@ -130,26 +122,28 @@ std::pair<size_t, std::string> SplitExpression(std::string line)
 }
 
 template <typename T>
-std::vector<std::pair<std::string, T*>> Process( std::vector<std::pair<std::string, std::pair<size_t, std::string>>> operands, std::vector<std::pair<std::string, std::string>> operations)
+std::vector<std::pair<std::string, T *>> Process(std::vector<std::pair<std::string, std::pair<size_t, std::string>>> operands, std::vector<std::pair<std::string, std::string>> operations)
 {
-    std::vector<std::pair<std::string, T*>> board;
-    for (size_t i = 0; i < operands.size(); i++) {
-        T* number = number->create(operands[i].second.first, operands[i].second.second);
-        std::pair<std::string, T*> aux = std::make_pair(operands[i].first, number);
+    std::vector<std::pair<std::string, T *>> board;
+    for (size_t i = 0; i < operands.size(); i++)
+    {
+        T *number = number->create(operands[i].second.first, operands[i].second.second);
+        std::pair<std::string, T *> aux = std::make_pair(operands[i].first, number);
         board.push_back(aux);
     }
-     for (size_t i = 0; i < operations.size(); i++) {
-        Rpn<T*> rpn(board);
+    for (size_t i = 0; i < operations.size(); i++)
+    {
+        Rpn<T *> rpn(board);
         T *result = rpn.Calculate(operations[i].second);
-        std::pair<std::string, T*> aux = std::make_pair(operations[i].first, result);
+        std::pair<std::string, T *> aux = std::make_pair(operations[i].first, result);
         board.push_back(aux);
-     }
+    }
 
     return board;
 }
 
-template<typename T>
-void WriteFile(std::string file, std::vector<std::pair<std::string, T*>> board)
+template <typename T>
+void WriteFile(std::string file, std::vector<std::pair<std::string, T *>> board)
 {
     std::ofstream file_output(file);
     if (file_output.is_open())

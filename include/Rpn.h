@@ -1,10 +1,12 @@
 /**
  * @file Rpn.h
- * @brief Calculadora de expresiones en notación polaca inversa
+ * @title Calculadora de expresiones en notación polaca inversa
+ * @brief Declaración de la clase Rpn
  * @version 1.0
- * @date 14/02/2023
- * @author Fabrizzio Perilli Martín
+ * @date 6/03/2023
+ * @author: Fabrizzio Perilli Martín
  */
+
 #pragma once
 #include <iostream>
 #include <sstream>

@@ -1,10 +1,12 @@
 /**
  * @file BigInt.h
- * @brief Plantilla de clase para la representación de números grandes
+ * @title Calculadora de expresiones en notación polaca inversa
+ * @brief Definición de la clase BigInt
  * @version 1.0
- * @date 14/02/2023
- * @author Fabrizzio Perilli Martín
+ * @date 6/03/2023
+ * @author: Fabrizzio Perilli Martín
  */
+
 #pragma once
 #include <iostream>
 #include <vector>
@@ -177,7 +179,6 @@ private:
   int sign_; // 1 positive , -1 negative
 };
 
-////////////////////////////////////////////////////////
 template <size_t Base>
 BigInt<Base>::BigInt(long n)
 {
@@ -981,7 +982,7 @@ Number *BigInt<Base>::Module(const Number *n) const
 
   if (n == nullptr)
     return nullptr;
-  
+
   if (base != base2)
   {
     switch (base)
